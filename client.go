@@ -1,12 +1,18 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package main
 
 import (
-	"github.com/google/go-github/github"
 	"context"
+	"encoding/csv"
 	"fmt"
 	"strings"
-	"encoding/csv"
 	"time"
+
+	"github.com/google/go-github/github"
 )
 
 type Client struct {
@@ -71,13 +77,12 @@ func (c *Client) fetchCode(query CodeQuery, page int) (*[]CodeResponse, error) {
 	q := c.createCodeQuery(query)
 	opts := &github.SearchOptions{Sort: "indexed", Order: "desc", ListOptions: github.ListOptions{PerPage: 100, Page: page}}
 
-	auth,res,err:=c.client.Authorizations.Create(context.Background(), &github.AuthorizationRequest{ClientID: &c.clientID, ClientSecret: &c.clientSecret})
-	if err != nil{
+	auth, res, err := c.client.Authorizations.Create(context.Background(), &github.AuthorizationRequest{ClientID: &c.clientID, ClientSecret: &c.clientSecret})
+	if err != nil {
 		fmt.Println(err)
-	}else{
-		fmt.Println(*auth,*res)
+	} else {
+		fmt.Println(*auth, *res)
 	}
-
 
 	url := fmt.Sprintf("%s?q=%s+language:%s+repo:%s&sort=indexed&order=desc&per_page=100&page=%d&client_id=%s&client_secret=%s", c.api[SEARCH_CODE], query.q, query.language, query.repositoryName, page, c.clientID, c.clientSecret)
 	c.logWriter.Write([]string{time.Now().String(), url})
@@ -118,7 +123,7 @@ func (c *Client) fetchRepository(word string, language string, page int) (*[]Rep
 	var repositories []RepositoryResponse
 
 	q := fmt.Sprintf("%s language:%s", word, language)
-	opts := &github.SearchOptions{Sort: "stars", Order: "desc", ListOptions: github.ListOptions{PerPage: 100, Page: page},}
+	opts := &github.SearchOptions{Sort: "stars", Order: "desc", ListOptions: github.ListOptions{PerPage: 100, Page: page}}
 
 	url := fmt.Sprintf("%s?q=%s+language:%s&sort=stars&order=desc&per_page=100&page=%d", c.api[SEARCH_REPOSITORIES], word, language, page)
 	c.logWriter.Write([]string{time.Now().String(), url})

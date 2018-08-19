@@ -1,6 +1,13 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package main
 
-import "time"
+import (
+	"time"
+)
 
 func pString(s string) *string {
 	return &s

@@ -1,14 +1,19 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package main
 
 import (
-	"fmt"
-	"strings"
 	"encoding/csv"
-	"strconv"
-	"sort"
-	"os"
-	"time"
+	"fmt"
 	"io"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func main() {
@@ -139,7 +144,7 @@ func writeCodesCSV(filename string, codes *[]Code) {
 		fmt.Println(err)
 	}
 	writer := csv.NewWriter(fw)
-	for i, code := range (*codes) {
+	for i, code := range *codes {
 		writer.Write([]string{strconv.Itoa(i), code.rawUrl, code.path})
 	}
 	writer.Flush()
@@ -156,7 +161,7 @@ func writeRepositoriesCSV(filename string, sortedRepositories *[]RepositoryRespo
 		fmt.Println(err)
 	}
 	writer := csv.NewWriter(fw)
-	for _, repository := range (*sortedRepositories) {
+	for _, repository := range *sortedRepositories {
 		writer.Write([]string{repository.FullName, repository.DefaultBranch, strconv.Itoa(repository.StargazersCount)})
 	}
 	writer.Flush()
